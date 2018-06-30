@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" th:href="@{css/bootstrap.min.css}"/>
+<script th:src="@{js/jquery-3.2.1.min.js}"/>
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+</head>
+<body>
+<div class="container">
+    <h3><a th:href="@{/}">首页</a> </h3>
+    <h3>Query 页面</h3>
+
+    <h4>普通查询</h4>
+
+    <button onclick="getUser()">getUser()</button>
+
+    <button onclick="getAllUsers()">getAllUsers()</button>
+
+    <button onclick="getAllUsersSortedAsc()">getAllUsersSortedAsc()</button>
+
+    <button onclick="getAllUsersSortedDesc()">getAllUsersSortedDesc()</button>
+
+    <button onclick="getFirst()">getFirst4Desc()</button>
+
+    <h4>@Named Query</h4>
+
+    <button onclick="getUserByNQ()">getUserByNameQuery()</button>
+
+    <h4>@Query</h4>
+
+    <button onclick="getUserByQuery()">getUserByQuery()</button>
+
+    <button onclick="getUserByQuery2()">getUserByQuery2()</button>
+
+    <br/>
+    姓名<input th:type="text" id="oldname"/><br/>
+    新名字<input th:type="text" id="newname"/><br/>
+
+    <button onclick="getUserByQueryUpdate()">getUserByQueryUpdate()</button>
+
+
+    <h4>分页</h4>
+    <button onclick="count()">count</button>
+    <a href="javascript:void(0)" onclick="getUserByPage(0)">首页</a>
+    <a href="javascript:void(0)" onclick="getUserByPage(1)">下一页</a>
+
+    <h4>save</h4>
+    <input type="text" id="s_name"/><br/>
+    <input type="text" id="s_nickname"/><br/>
+    <button class="btn-primary" onclick="saveUser()">保存用户</button>
+
+    <h4>delete</h4>
+    name<input type="text" id="d_name"/><br/>
+    <button class="btn-primary" onclick="deleteUser()">删除用户</button>
+    <button class="btn-primary" onclick="deleteUserByNames()">批量删除用户</button>
+
+    <h4>测试获取多选框的值</h4>
+    <ul id="fruit">
+        <li><input type="checkbox" name="fruit" value="0001"/>苹果</li>
+        <li><input type="checkbox" name="fruit" value="0002"/>梨子</li>
+        <li><input type="checkbox" name="fruit" value="0003"/>芒果</li>
+        <li><input type="checkbox" name="fruit" value="0004"/>山楂</li>
+        <li><input type="checkbox" name="fruit" value="0005"/>香蕉</li>
+    </ul>
+    <input type="checkbox" id="All"/>
+    <button id="checkAll">全选</button>
+    <button id="nothing">全不选</button>
+    <button id="reverseAll">反选</button>
+    <button class="chooseFruit">购买</button>
+</div>
+
+</body>
+</html>
+
+<script>
+
+    //获取用户，用于更新
+    function  getUser() {
+        console.log("执行 getUser 方法 begin");
+        //div切换到update页面。然后把ajax获得的值赋值给表单
+        $.ajax({
+            type:"POST",
+            url:"getUser",
+            dataType:'json',
+            success:function(data){
+               console.log("success");
+               console.log(data.name);
+            },
+            error: function (data) {
+                console.info("error: " + data);
+            }
+        });
+        console.log("执行 方法 end")
+    }
+
+
+
+    //获取所有用户,升序排序
+    function  getAllUsersSortedAsc() {
+        console.log("执行 getAllUsersSortedAsc 方法 begin");
+        //div切换到update页面。然后把ajax获得的值赋值给表单
+        $.ajax({
+            type:"POST",
+            url:"getAllUsersSortedAsc",
+            dataType:'json',
+            success:function(data){
+                console.log("success");
+                $.each( data, function(index, content){
+                   console.log(content["name"]+"  "+content["nickname"]+"\n");
+                });
+            },
+            error: function (data) {
+                console.info("error: " + data);
+            }
+        });
+        console.log("执行 方法 end")
+    }
+
+    //获取所有用户,升序排序
+    function  getAllUsersSortedDesc() {
+        console.log("执行 getAllUsersSortedDesc 方法 begin");
+        //div切换到update页面。然后把ajax获得的值赋值给表单
+        $.ajax({
+            type:"POST",
+            url:"getAllUsersSortedDesc",
+            dataType:'json',
+            success:function(data){
+                console.log("success");
+                $.each( data, function(index, content){
+                    console.log(content["name"]+"  "+content["nickname"]+"\n");
+                });
+            },
+            error: function (data) {
+                console.info("error: " + data);
+            }
+        });
+        console.log("执行 方法 end")
+    }
+
+
+    //获取所有用户
+    function  getAllUsers() {
+        console.log("执行 getAllUsers 方法 begin");
+        //div切换到update页面。然后把ajax获得的值赋值给表单
+        $.ajax({
+            type:"POST",
+            url:"getAllUsers",
+            dataType:'json',
+            success:function(data){
+                console.log("success");
+                $.each( data, function(index, content){
+                    console.log(content["name"]+"  "+content["nickname"]+"\n");
+                });
+            },
+            error: function (data) {
+                console.info("error: " + data);
+            }
+        });
+        console.log("执行 方法 end")
+    }
+
+    //获取限定数量的用户
+    function  getFirst() {
+        console.log("执行 限定数量用户查询 方法 begin");
+        $.ajax({
+            type:"POST",
+            url:"getFirst",
+            dataType:'json',
+            success:function(data){
+                console.log("success");
+                $.each( data, function(index, content){
+                    console.log(content["name"]+"  "+content["nickname"]+"\n");
+                });
+            },
+            error: function (data) {
+                console.info("error: " + data);
+            }
+        });
+        console.log("执行 方法 end")
+    }
+
+    /*NamedQuery方法*/
+
+    //@NamedQuery获取用户，用于更新
+    function  getUserByNQ() {
+        console.log("执行 @NamedQuery 方法 begin");
+        //div切换到update页面。然后把ajax获得的值赋值给表单
+        $.ajax({
+            type:"POST",
+            url:"getUserByNQ",
+            data:{"name":"a"},
+            dataType:'json',
+            success:function(data){
+                console.log("success");
+                console.log(data.name+" "+data.nickname);
+            },
+            error: function (data) {
+                console.info("error: " + data);
+            }
+        });
+        console.log("执行 方法 end")
+    }
+
+
+    //@Query 获取用户，用于更新
+    function  getUserByQuery() {
+        console.log("执行 @Query 方法 begin");
+        //div切换到update页面。然后把ajax获得的值赋值给表单
+        $.ajax({
+            type:"POST",
+            url:"getUserByQuery",
+            data:{"name":"fate"},
+            dataType:'json',
+            success:function(data){
+                console.log("success");
+                console.log(data.name+" "+data.nickname);
+            },
+            error: function (data) {
+                console.info("error: " + data);
+            }
+        });
+        console.log("执行 方法 end")
+    }
+
+
+
+    //@Query 获取用户，用于更新
+    function  getUserByQuery2() {
+        console.log("执行 @Query2 方法 begin");
+        //div切换到update页面。然后把ajax获得的值赋值给表单
+        $.ajax({
+            type:"POST",
+            url:"getUserByQuery2",
+            data:{"name":"a"},
+            dataType:'json',
+            success:function(data){
+                console.log("success");
+                console.log(data.name+" "+data.nickname);
+            },
+            error: function (data) {
+                console.info("error: " + data);
+            }
+        });
+        console.log("执行 方法 end")
+    }
+
+    //更新查询
+    function  getUserByQueryUpdate() {
+        console.log("执行 @QueryUpdate 方法 begin");
+        $.ajax({
+            type:"POST",
+            url:"getUserByQueryUpdate",
+            data:{"name":$("#newname").val(),"oldname":$("#oldname").val()},
+            dataType:'json',
+            success:function(data){
+                console.log("success");
+                console.log(data.num);
+                if(data.num==1)
+                    console.log("修改成功");
+            },
+            error: function (data) {
+                console.info("error: " + data.num);
+            }
+        });
+        console.log("执行 方法 end")
+    }
+
+
+    //分页查询  实际中应该先执行查询，返回对应的totalpage等相关参数，对分页插件进行初始化。
+    // 此处为测试
+    function getUserByPage(pagenum) {
+        console.log("执行 @QueryByPage方法 begin");
+        $.ajax({
+            type:"POST",
+            url:"getUserByPage",
+            data:{"pagenum":pagenum,"pagesize":2},
+            dataType:'json',
+            success:function(data){
+                console.log("success");
+                console.log(data);
+                console.log(data.content);
+                console.log("共"+data.totalPages+"页");
+                $.each(data.content, function(index, content){
+                    console.log(content["name"]+"  "+content["nickname"]+"\n");
+                });
+            },
+            error: function (data) {
+                console.info("error: " + data);
+            }
+        });
+        console.log("执行 方法 end")
+
+    }
+
+    //count
+    function count() {
+        console.log("执行 @count方法 begin");
+        $.ajax({
+            type:"POST",
+            url:"count",
+            data:[],
+            dataType:'json',
+            success:function(data){
+                console.log("success");
+                console.log("共"+data.size+"条数据");
+            },
+            error: function (data) {
+                console.info("error: " + data);
+            }
+        });
+        console.log("执行 方法 end")
+    }
+
+    //保存用户
+    function saveUser() {
+        console.log("执行 @saveUser方法 begin");
+        $.ajax({
+            type:"POST",
+            url:"saveUser",
+            data:{"name":$("#s_name").val(),"nickname":$("#s_nickname").val()},
+            dataType:'json',
+            success:function(data){
+                console.log("success");
+                console.log(data.nickname+" "+data.name);
+            },
+            error: function (data) {
+                console.info("error: " + data);
+            }
+        });
+        console.log("执行 方法 end")
+
+    }
+
+    //删除指定用户
+    function deleteUser() {
+        alert($("#d_name").val());
+        console.log("执行 @deleteUser方法 begin");
+        $.ajax({
+            type:"POST",
+            url:"deleteUser",
+            data:{"name":$("#d_name").val()},
+            dataType:'json',
+            success:function(data){
+                console.log("success");
+                console.log(data.msg);
+            },
+            error: function (data) {
+                console.info("error: " + data);
+            }
+        });
+        console.log("执行 方法 end")
+
+    }
+
+    //批量删除用户
+    function deleteUserByNames(){
+        var arr=new Array();
+        arr[0]='d1';
+        arr[1]='d2';
+        console.log("执行 @deleteUserByNames方法 begin");
+        $.ajax({
+            type:"POST",
+            url:"deleteUserByNames",
+            data:{"names":arr},
+            traditional:true,
+            dataType:'json',
+            success:function(data){
+                console.log("success");
+                if(data.msg!=0)
+                    console.log("成功删除"+data.msg+"条记录");
+            },
+            error: function (data) {
+                console.info("error: " + data);
+            }
+        });
+        console.log("执行 方法 end")
+
+    }
+
+
+
+    <!-- 选择全部/全不选 -->
+    $("#All").click(function(){
+        if($(this).is(":checked")){
+            $('input[name="fruit"]').prop("checked", true);
+        }else{
+            $('input[name="fruit"]').prop("checked", false);
+        }
+    });
+
+    <!--选择全部-->
+    $("#checkAll").click(function(){
+        $('input[name="fruit"]').prop("checked", true);
+    });
+
+    <!--全不选-->
+    $("#nothing").click(function(){
+        $('input[name="fruit"]').prop("checked", false);
+    });
+
+    <!--反选-->
+    $("#reverseAll").click(function(){
+        $('input[name="fruit"]').each(function(i){
+            $(this).prop("checked", !$(this).prop("checked"));
+        });
+    });
+
+    <!--获取选中复选框的值-->
+    $(".chooseFruit").click(function(){
+        var arr = new Array();
+        $('input[name="fruit"]:checked').each(function(i){
+            console.log(i);
+            arr[i] = $(this).val();
+            console.info(arr[i]);
+        });
+
+    });
+
+</script>
