@@ -33,7 +33,6 @@ public class UserController {
     public String home(Model model){
         Msg msg = new Msg("mmp", "测试内容", "额外信息，只对管理员显示");
         model.addAttribute("msg", msg);
-
         return "index";
     }
 

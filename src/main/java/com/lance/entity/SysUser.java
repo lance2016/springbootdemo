@@ -8,6 +8,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by sang on 2017/1/10.
@@ -21,7 +22,7 @@ public class SysUser implements UserDetails {
     private String password;
 
     @ManyToMany(cascade = {CascadeType.REFRESH},fetch = FetchType.EAGER)
-    private List<SysRole> roles;
+    private Set<SysRole> roles;
 
     public Long getId() {
         return id;
@@ -39,18 +40,21 @@ public class SysUser implements UserDetails {
         this.password = password;
     }
 
-    public List<SysRole> getRoles() {
+
+
+    public Set<SysRole> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<SysRole> roles) {
+    public void setRoles(Set<SysRole> roles) {
         this.roles = roles;
     }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> auths = new ArrayList<>();
-        List<SysRole> roles = this.getRoles();
+        Set<SysRole> roles = this.getRoles();
         for (SysRole role : roles) {
             auths.add(new SimpleGrantedAuthority(role.getName()));
         }

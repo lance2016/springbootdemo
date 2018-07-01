@@ -18,8 +18,10 @@ public interface SysUserRepository extends JpaRepository<SysUser, Long> {
     //    暴露findByUsername方法为REST资源
     //定义
     @RestResource(path="findByName",rel="findByName")
-    SysUser findByUsername(@Param("name") String username);
+    SysUser findByUsername(@Param("username") String username);
     //访问 http://localhost:8080/sysuser/search/findByName?name=lance
 
+    SysUser getByUsername(String username);
+    SysUser findByUsernameAndPassword(String username,String password);
     SysUser findSysUserById(Long id);
 }
