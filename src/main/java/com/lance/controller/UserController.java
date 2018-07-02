@@ -1,9 +1,10 @@
 package com.lance.controller;
 
-import com.lance.dao.SysUserRepository;
-import com.lance.dao.TestRepository;
+import com.lance.repository.SysUserRepository;
+import com.lance.repository.TestRepository;
 import com.lance.entity.Msg;
 import com.lance.entity.TestEntity;
+import com.lance.service.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,6 +27,8 @@ public class UserController {
 
     @Autowired
     SysUserRepository sysUserRepository;
+    @Autowired
+    TestService testService;
     @Autowired
     TestRepository testRepository;
     @RequestMapping("/mmp")
@@ -58,7 +60,7 @@ public class UserController {
     @ResponseBody
     public TestEntity getUser(){
         TestEntity testEntity=new TestEntity();
-        testEntity = testRepository.getByName("lance");
+        testEntity = testService.findByUsername("lance");
         System.out.println("跑出来了"+testEntity);
         return testEntity;
     }
@@ -147,7 +149,7 @@ public class UserController {
     public TestEntity saveUser(@RequestParam String name,@RequestParam String nickname)
     {
        TestEntity testEntity=new TestEntity(name,nickname);
-       return testRepository.save(testEntity);
+       return testService.save(testEntity);
     }
 
     //删除用户
@@ -156,7 +158,7 @@ public class UserController {
     public String  deleteUser(@RequestParam String name)
     {
         String msg="";
-        int b=testRepository.deleteByName(name);
+        int b=testService.deleteByUsername(name);
         msg="{\"msg\":\""+b+"\"}";
         System.out.println("msg is "+ msg);
         return msg;

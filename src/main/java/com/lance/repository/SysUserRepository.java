@@ -1,4 +1,4 @@
-package com.lance.dao;
+package com.lance.repository;
 
 import com.lance.entity.SysUser;
 import org.springframework.data.jpa.repository.JpaRepository;

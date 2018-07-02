@@ -1,4 +1,4 @@
-package com.lance.dao;
+package com.lance.repository;
 
 import com.lance.entity.TestEntity;
 import org.springframework.data.domain.Page;
@@ -9,8 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
-import javax.persistence.Entity;
-import javax.persistence.NamedQuery;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -18,6 +16,7 @@ import java.util.List;
  * Created by lance on 2018/6/26.
  */
 public interface TestRepository extends CrudRepository<TestEntity,String> {
+
     /*查询操作 */
 
     //    常规查询

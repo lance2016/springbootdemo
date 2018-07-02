@@ -1,6 +1,6 @@
 package com.lance.service;
 
-import com.lance.dao.SysUserRepository;
+import com.lance.repository.SysUserRepository;
 import com.lance.entity.SysUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
